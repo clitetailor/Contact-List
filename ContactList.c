@@ -7,7 +7,6 @@
 
 void initializeNode(Node ** hNode)
 {
-	free(*hNode);
 	(*hNode) = (Node *) malloc( sizeof(Node) );
 	
 	(*hNode)->next = NULL;
@@ -22,7 +21,7 @@ void deleteNode(Node *hNode)
 
 
 
-void connectNode(Node *nodeA, Node *nodeB)
+void linkNode(Node *nodeA, Node *nodeB)
 {
 	nodeA->next = nodeB;
 };
@@ -44,6 +43,45 @@ char * getString(Node *hNode)
 	return (char *) hNode->data;
 }
 
+
+
+
+void initializeLinkList(LinkList **a)
+{
+	(*a) = (LinkList *) malloc(sizeof(LinkList));
+	
+	(*a)->head = NULL;
+	(*a)->tail = NULL;
+	(*a)->size = 0;
+}
+
+void deleteLinkList(LinkList *a)
+{
+	Node *currentNode = a=>head;
+	Node *tempNode = a->head;
+	
+	if ( a->head != NULL )
+	{
+		while ( currentNode->next != NULL )
+		{
+			tempNode = currentNode->next;
+			deleteNode(currentNode);
+			currentNode = tempNode;
+		}
+	}
+	
+	free(a);
+}
+
+void initializeContactList(ContactList **a)
+{
+	initializeLinkList(a);
+}
+
+
+
+
+#ifdef test
 
 int main()
 {
@@ -70,3 +108,5 @@ int main()
 	
 	return 0;
 }
+
+#endif

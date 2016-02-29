@@ -3,6 +3,9 @@
 
 #define MAX_STRING_SIZE 32
 
+#include <stdbool.h>
+
+
 // LinkList definition
 
 struct node
@@ -15,7 +18,7 @@ typedef struct node Node;
 void initializeNode(Node ** hNode);
 void deleteNode(Node *hNode);
 
-void connectNode(Node *nodeA, Node *nodeB);
+void linkNode(Node *nodeA, Node *nodeB);
 
 bool setString(Node *hNode, char * str);
 char * getString(Node *hNode);
@@ -26,14 +29,15 @@ struct linklist
 {
 	struct node *head;
 	struct node *tail;
+	int size;
 };
 typedef struct linklist LinkList;
 
-void initializeLinkList(LinkList ** hList);
-void deleteLinkList(LinkList *lLIst);
+void initializeLinkList(LinkList ** a);
+void deleteLinkList(LinkList *a);
 
-void appendNode(LinkList *lList, Node *node);
-void removeNode(LinkList *lList, int i);
+void appendNode(LinkList *a, Node *node);
+void removeNode(LinkList *a, int i);
 
 Node * getNode(LinkList *lList, int i);
 
@@ -78,6 +82,21 @@ void addHomePhoneNumber(Contact *hContact, char * homephonenumber);
 void removeHomePhoneNumber(Contact *hContact, int i);
 void addOfficePhoneNumber(Contact *hContact, char * officephonenumber);
 void removeOfficePhoneNumber(Contact *hContact, int i);
+
+
+
+// Command line interface
+
+
+void CommandLineInterface();
+
+void ContactListMenu(ContactList *a);
+void displayContactList(ContactList *a);
+void manageContactListCommand(ContactList *a, int command);
+
+void ContactMenu();
+void displayContact(Contact *a);
+void manageContactCommand(Contact *a, int command);
 
 
 
