@@ -57,7 +57,7 @@ void initializeLinkList(LinkList **a)
 
 void deleteLinkList(LinkList *a)
 {
-	Node *currentNode = a=>head;
+	Node *currentNode = a->head;
 	Node *tempNode = a->head;
 	
 	if ( a->head != NULL )
@@ -73,10 +73,100 @@ void deleteLinkList(LinkList *a)
 	free(a);
 }
 
-void initializeContactList(ContactList **a)
+
+void appendNode(LinkList *a, Node *node)
 {
-	initializeLinkList(a);
+	if ( a->head == NULL )
+	{
+		initializeNode(a->head);
+		a->tail = a->head;
+	}
+	else
+	{
+		initializeNode(a->tail->next);
+		a->tail = a->tail->next;
+	}
 }
+
+bool removeNode(LinkList *a, int n)
+{
+	if (n < 0 || n > a->size - 1)
+	{
+		return false;
+	}
+	
+	if (n == 0)
+	{
+		temp = a->head->next;
+		deleteNode(a->head);
+		a->head = temp;
+		
+		if (a->size == 1)
+		{
+			a->tail = NULL;
+		}
+	}
+	else if (n == a->size - 1)
+	{
+		Node *currentNode = a->head;
+		
+		int i;
+		for (i = 0; i < n - 2; ++i)
+		{
+			currentNode = currentNode->next;
+		}
+		
+		deleteNode(currentNode->next);
+		currentNode->next = NULL;
+		
+		a->tail = currentNode;
+	}
+	else
+	{
+		Node *temp;
+		Node *currentNode = a->head;
+		
+		int i;
+		for (i = 1; i < n; ++i)
+		{
+			currentNode = currentNode->next;
+		}
+		
+		temp = currentNode->next->next;
+		deleteNode(currentNode->next);
+		
+		currentNode->next = temp;
+	}
+	
+	a->size--;
+	
+	return true;
+}
+
+
+Node * getNode(LinkList *a, int n)
+{
+	if (n < 0 || n > a->size - 1)
+	{
+		return NULL;
+	}
+	
+	if (n == 0)
+	{
+		return a->head;
+	}
+	
+	Node * currentNode = a->head;
+	
+	int i;
+	for (i = 0; i < n; ++i)
+	{
+		currentNode = currentNode->next;
+	}
+	
+	return currentNode;
+}
+
 
 
 

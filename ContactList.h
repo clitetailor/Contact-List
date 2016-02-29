@@ -37,9 +37,9 @@ void initializeLinkList(LinkList ** a);
 void deleteLinkList(LinkList *a);
 
 void appendNode(LinkList *a, Node *node);
-void removeNode(LinkList *a, int i);
+bool removeNode(LinkList *a, int n);						// From 0
 
-Node * getNode(LinkList *lList, int i);
+Node * getNode(LinkList *a, int n);
 
 
 
