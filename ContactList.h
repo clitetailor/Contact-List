@@ -91,6 +91,7 @@ void ContactMenu();
 void displayContact(Contact *a);
 void manageContactCommand(Contact *a, int command);
 
-
+// void encapsulate(ContactList *a);
+// void import();
 
 #endif

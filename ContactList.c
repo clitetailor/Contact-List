@@ -311,33 +311,3 @@ void renameContactInContactList(ContactList *a, int n, char * name)
  * Additional Test
  *
  */
-#ifdef additional_test
-
-
-int main()
-{
-	Node *A, *B;
-	initializeNode(&A);
-	initializeNode(&B);
-	
-	connectNode(A, B);
-	
-	char * str = (char *) malloc(sizeof(char) * (MAX_STRING_SIZE + 1));
-	do
-	{
-		fflush(stdin);
-		fgets(str, MAX_STRING_SIZE + 1, stdin);
-		printf("\nstr:%s", str);
-	} while ( !setString(A, str) );
-	
-	printf("%s", getString(A));
-	
-	free(str);
-	
-	deleteNode(A);
-	deleteNode(B);
-	
-	return 0;
-}
-
-#endif

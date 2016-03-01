@@ -7,8 +7,6 @@
 
 #include "ContactList.h"
 
-#ifndef additional_test
-
 void CommandLineInterface()
 {
 	ContactList * a;
@@ -32,6 +30,7 @@ void CommandLineInterface()
 		
 		manageContactListCommand(a, selection);
 		
+		Sleep(500);
 	} while (selection != 5);
 	
 	printf("\nChuong trinh dang thoat! ");
@@ -96,10 +95,24 @@ void manageContactListCommand(ContactList *a, int command)
 					// Select Contact 
 					
 					int selection;
-					printf("\nNhap vao dia chi ban muon chon:");
 					
-					fflush(stdin);
-					scanf("%d", &selection);
+					if (a->size == 0)
+					{
+						printf("\nKhong co dia chi nao de chon!\n");
+						break;
+					}
+					
+					if (a->size == 1)
+					{
+						selection = 1;
+					}
+					else
+					{
+						printf("\nNhap vao dia chi ban muon chon (1-%d):", a->size);
+						
+						fflush(stdin);
+						scanf("%d", &selection);
+					}
 					
 					Node * selectedNode;
 					selectedNode = getNode(a, selection - 1);
@@ -110,10 +123,11 @@ void manageContactListCommand(ContactList *a, int command)
 						break;
 					}
 					
+					Sleep(500);
 					do
 					{
 						ContactMenu();
-						printf("\n\nNhap vao lenh ban muon thuc hien (1-8):");
+						printf("\n\nNhap vao lenh ban muon thuc hien (1-9):");
 						
 						fflush(stdin);
 						scanf("%d", &selection);
@@ -124,6 +138,8 @@ void manageContactListCommand(ContactList *a, int command)
 						{
 							printf("\nNhap vao khong hop le!\n");
 						}
+						
+						Sleep(500);
 					} while (selection != 9);
 					
 					break;
@@ -152,14 +168,38 @@ void manageContactListCommand(ContactList *a, int command)
 		case 4:
 				{
 					// Remove contact
-					int i;
-					printf("\nNhap vao dia chi ban muon xoa:");
-					scanf("%d", &i);
-					
-					if (!removeContact(a, i-1))
+					if (a->size == 0)
 					{
-						printf("\nKhong co dia chi ban muon xoa!\n");
+						printf("\nKhong co dia chi nao de xoa!\n");
+						break;
 					}
+					
+					if (a->size == 1)
+					{
+						char c;
+						printf("\nBan co muon xoa dia chi (Y/N):");
+						fflush(stdin);
+						scanf("%c", &c);
+						if (c == 'Y' || c == 'y')
+						{
+							removeContact(a, 0);
+						}
+						
+						break;
+					}
+					else
+					{
+						int i;
+						printf("\nNhap vao dia chi ban muon xoa (1-%d):", a->size);
+						fflush(stdin);
+						scanf("%d", &i);
+						
+						if (!removeContact(a, i-1))
+						{
+							printf("\nKhong co dia chi ban muon xoa!\n");
+						}
+					}
+					
 					break;
 				}
 		case 5:
@@ -287,20 +327,37 @@ void manageContactCommand(Contact *a, int command)
 		case 4:
 				{
 					// Remove an email address
-					int selection;
 					
-					if (a->Address->size == 0)
+					if (a->Email->size == 0)
 					{
-						printf("\nKhong co dia chi nao de xoa!\n");
+						printf("\nKhong co email nao de xoa!\n");
 					}
 					
-					printf("\nNhap vao email ban muon xoa (1-%d):", a->Address->size);
-					fflush(stdin);
-					scanf("%d", &selection);
-					
-					if (!removeEmail(a, selection - 1))
+					if (a->Email->size == 1)
 					{
-						printf("\nKhong co email ban muon xoa!\n");
+						char c;
+						printf("\nBan co muon xoa email (Y/N):");
+						fflush(stdin);
+						scanf("%c", &c);
+						
+						if (c == 'Y' || c == 'y')
+						{
+							removeEmail(a, 0);
+						}
+						
+						break;
+					}
+					else
+					{
+						int selection;
+						printf("\nNhap vao email ban muon xoa (1-%d):", a->Email->size);
+						fflush(stdin);
+						scanf("%d", &selection);
+						
+						if (!removeEmail(a, selection - 1))
+						{
+							printf("\nKhong co email ban muon xoa!\n");
+						}
 					}
 					
 					break;
@@ -330,14 +387,37 @@ void manageContactCommand(Contact *a, int command)
 		case 6:
 				{
 					// Remove an address
-					int selection;
-					printf("\nNhap vao dia chi ban muon xoa:");
-					fflush(stdin);
-					scanf("%d", &selection);
 					
-					if (!removeAddress(a, selection - 1))
+					if (a->Address->size == 0)
 					{
-						printf("\nKhong co dia chi ban muon xoa!\n");
+						printf("\nKhong co dia chi nao de xoa!\n");
+					}
+					
+					if (a->Address->size == 1)
+					{
+						char c;
+						printf("\nBan co muon xoa dia chi (Y/N):");
+						fflush(stdin);
+						scanf("%c", &c);
+						
+						if (c == 'Y' || c == 'y')
+						{
+							removeEmail(a, 0);
+						}
+						
+						break;
+					}
+					else
+					{
+						int selection;
+						printf("\nNhap vao dia chi ban muon xoa (1-%d):", a->Address->size);
+						fflush(stdin);
+						scanf("%d", &selection);
+						
+						if (!removeAddress(a, selection - 1))
+						{
+							printf("\nKhong co dia chi ban muon xoa!\n");
+						}
 					}
 					
 					break;
@@ -346,10 +426,11 @@ void manageContactCommand(Contact *a, int command)
 				{
 					// Add a phone number
 					char phone[MAX_STRING_SIZE + 2];
-					printf("\nNumber:");
 					
+					bool retval;
 					do
 					{
+						printf("\nNumber:");
 						fflush(stdin);
 						fgets(phone, MAX_STRING_SIZE + 2, stdin);
 						
@@ -358,7 +439,22 @@ void manageContactCommand(Contact *a, int command)
 							printf("\nDo dai vuot qua %d. Yeu cau nhap lai!\n", MAX_STRING_SIZE-1);
 						}
 						
-					} while ( strlen(phone) > MAX_STRING_SIZE );
+						int i;
+						retval = true;
+						for (i = 0; i < strlen(phone) - 1; ++i)
+						{
+							if (phone[i] < '0' || phone[i] > '9')
+							{
+								retval = false;
+							}
+						}
+						
+						if (retval == false)
+						{
+							printf("\nSo dien thoai nhap vao khong hop le. Yeu cau nhap lai!\n");
+						}
+						
+					} while ( strlen(phone) > MAX_STRING_SIZE || retval != true );
 					
 					addPhone(a, phone);
 					break;
@@ -366,14 +462,37 @@ void manageContactCommand(Contact *a, int command)
 		case 8:
 				{
 					// Remove a phone number
-					int selection;
-					printf("\nNhap vao so dien thoai ban muon xoa:");
-					fflush(stdin);
-					scanf("%d", &selection);
-					
-					if (!removePhone(a, selection - 1))
+					if (a->Phone->size == 0)
 					{
-						printf("\nKhong co so dien thoai ban muon xoa!\n");
+						printf("\nKhong co so dien thoai nao de xoa!\n");
+						break;
+					}
+					
+					if (a->Phone->size == 1)
+					{
+						char c;
+						printf("\nBan co muon xoa so dien thoai (Y/N):");
+						fflush(stdin);
+						scanf("%c", &c);
+						
+						if (c == 'Y' || c == 'y')
+						{
+							removePhone(a, 0);
+						}
+						
+						break;
+					}
+					else
+					{
+						int selection;
+						printf("\nNhap vao dia chi dien thoai ban muon xoa (1-%d):", a->Phone->size);
+						fflush(stdin);
+						scanf("%d", &selection);
+						
+						if (!removePhone(a, selection - 1))
+						{
+							printf("\nKhong co so dien thoai ban muon xoa!\n");
+						}
 					}
 					
 					break;
