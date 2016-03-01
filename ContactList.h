@@ -20,8 +20,8 @@ void deleteNode(Node *hNode);
 
 void linkNode(Node *nodeA, Node *nodeB);
 
-bool setString(Node *hNode, char * str);
-char * getString(Node *hNode);
+bool setString(Node *a, char * str);
+char * getString(Node *a);
 
 
 
@@ -36,7 +36,7 @@ typedef struct linklist LinkList;
 void initializeLinkList(LinkList ** a);
 void deleteLinkList(LinkList *a);
 
-void appendNode(LinkList *a, Node *node);
+void appendNode(LinkList *a, Node *nd);
 bool removeNode(LinkList *a, int n);						// From 0
 
 Node * getNode(LinkList *a, int n);
@@ -45,43 +45,39 @@ Node * getNode(LinkList *a, int n);
 
 // ContactList definition
 
-typedef LinkList ContactList;
-
-void initializeContactList(ContactList ** hList);
-void deleteContactList(ContactList * cList);
-
-void addContact(ContactList ** cList, char * Name);
-void removeContact(ContactList ** cList, int i);
-void renameContactInContactList(ContactList ** cList, int i);
-
-void chooseContact(ContactList * cList, int i);
-
-void printContactList(ContactList * cList);
 
 struct contact
 {
-	char * Name;
-	LinkList * Emails;
-	LinkList * HomeAddresses;
-	LinkList * HomePhoneNumbers;
-	LinkList * OfficePhoneNumbers;
+	char Name[MAX_STRING_SIZE];
+	LinkList * Email;
+	LinkList * Address;
+	LinkList * Phone;
 };
 typedef struct contact Contact;
 
-void initialize(Contact ** hContact);
-void delete(Contact *hContact);
+void initializeContact(Contact ** a);
+void deleteContact(Contact *a);
 
-void print(Contact *hContact);
+void setContactName(Contact *a, char * name);
+void addEmail(Contact *a, char * email);
+void removeEmail(Contact *a, int n);
+void addAdress(Contact *a, char * address);
+void removeAdress(Contact *a, int n);
+void addPhone(Contact *a, char * phone);
+void removePhone(Contact *a, int n);
 
-void renameContact(Contact *hContact);
-void addEmail(Contact *hContact, char * email);
-void removeEmail(Contact *hContact, int i);
-void addAdresses(Contact *hContact, char * address);
-void removeAdresses(Contact *hContact, int i);
-void addHomePhoneNumber(Contact *hContact, char * homephonenumber);
-void removeHomePhoneNumber(Contact *hContact, int i);
-void addOfficePhoneNumber(Contact *hContact, char * officephonenumber);
-void removeOfficePhoneNumber(Contact *hContact, int i);
+
+
+typedef LinkList ContactList;
+
+void initializeContactList(ContactList **a);
+void deleteContactList(ContactList *a);
+
+void printContactList(ContactList *a);
+
+void addContact(ContactList * a, char * name);
+void removeContact(ContactList * a, int i);
+void renameContactInContactList(ContactList * a, int n, char * name);
 
 
 
@@ -91,7 +87,6 @@ void removeOfficePhoneNumber(Contact *hContact, int i);
 void CommandLineInterface();
 
 void ContactListMenu(ContactList *a);
-void displayContactList(ContactList *a);
 void manageContactListCommand(ContactList *a, int command);
 
 void ContactMenu();

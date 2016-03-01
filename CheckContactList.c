@@ -7,10 +7,7 @@
 
 #include "ContactList.h"
 
-#ifndef test
-
-
-
+#ifndef additional_test
 
 void CommandLineInterface()
 {
@@ -27,7 +24,7 @@ void CommandLineInterface()
 		fflush(stdin);
 		scanf("%d", &selection);
 		
-		if (selection < 1 || selection > 4)
+		if (selection < 1 || selection > 5)
 		{
 			printf("\nLenh nhap vao khong thoa man!\n");
 			continue;
@@ -35,7 +32,7 @@ void CommandLineInterface()
 		
 		manageContactListCommand(a, selection);
 		
-	} while (selection != 4);
+	} while (selection != 5);
 	
 	printf("\nChuong trinh dang thoat! ");
 					Sleep(250);
@@ -57,8 +54,8 @@ void ContactListMenu(ContactList *a)
 	
 	menu = (char **) malloc(sizeof(char *) * menusize);
 	
-	menu[0] = "Hien thi toan bo dia chi";
-	menu[1] = "Hien thi so dia chi hien tai";
+	menu[0] = "Hien thi so dia chi";
+	menu[1] = "Chon dia chi";
 	menu[2] = "Them dia chi";
 	menu[3] = "Xoa dia chi";
 	menu[4] = "Thoat khoi chuong trinh";
@@ -72,8 +69,6 @@ void ContactListMenu(ContactList *a)
 	printf("\n");
 }
 
-void displayContactList(ContactList *a);
-
 void manageContactListCommand(ContactList *a, int command)
 {
 	switch(command)
@@ -81,38 +76,82 @@ void manageContactListCommand(ContactList *a, int command)
 		case 1:
 				{
 					// Print all
+					int i;
+					Node * currentNode;
+					
+					printf("\nSo dia chi:\n");
+					currentNode = a->head;
+					
+					for (i = 0; i < a->size; ++i)
+					{
+						printf("\n\t%d, %s", i+1, getString(currentNode));
+					}
+					
+					printf("\n");
+					printContactList();
 					break;
 				}
 		case 2:
 				{
-					// Contact 
+					// Select Contact 
 					
 					int selection;
 					printf("\nNhap vao dia chi ban muon chon:");
 					
 					fflush(stdin);
 					scanf("%d", &selection);
+					
+					Node * selectedNode;
+					selectedNode = getNode(a, selection - 1);
+					
 					do
 					{
 						ContactMenu();
-						printf("\n\nNhap vao lenh ban muon thuc hien (1-5):");
+						printf("\n\nNhap vao lenh ban muon thuc hien (1-8):");
 						
 						fflush(stdin);
-						scanf("%d", selection);
+						scanf("%d", &selection);
 						
-						manageContactListCommand(a, selection);
-					} while (selection < 1 || selection > 4);
+						manageContactCommand( (Contact *) selectedNode->data, selection);
+						
+						if (selection < 1 || selected > 8)
+						{
+							printf("\nLenh nhap vao khong hop le!\n");
+						}
+					} while (selection != 8);
 					
 					break;
 				}
 		case 3:
 				{
 					// Add contact
+					char name[MAX_STRING_SIZE + 1];
+					printf("\nNhap vao ten dia chi:");
+					
+					do
+					{
+						fflush(stdin);
+						fgets(name, MAX_STRING_SIZE + 1, stdin);
+						
+						if ( strlen(name) > MAX_STRING_SIZE )
+						{
+							printf("\nDo dai vuot qua %d. Yeu cau nhap lai!", MAX_STRING_SIZE);
+						}
+						
+					} while ( strlen(name) > MAX_STRING_SIZE );
+					
+					addContact(a, name);
+					
 					break;
 				}
 		case 4:
 				{
+					// Remove contact
+					int i;
+					printf("\nNhap vao dia chi ban muon xoa:");
+					scanf("%d", &i);
 					
+					removeContact(a, i);
 					break;
 				}
 		case 5:
@@ -125,9 +164,9 @@ void manageContactListCommand(ContactList *a, int command)
 
 
 
-void ContactMenu(Contact *a)
+void ContactMenu()
 {
-	int menusize = 9;
+	int menusize = 8;
 	char ** menu;
 	
 	printf("\nDanh sach cac lenh:\n");
@@ -139,10 +178,9 @@ void ContactMenu(Contact *a)
 	menu[2] = "Xoa email";
 	menu[3] = "Them dia chi";
 	menu[4] = "Xoa dia chi";
-	menu[5] = "Them dien thoai nha";
-	menu[6] = "Xoa dien thoai nha";
-	menu[7] = "Them dien thoai van phong";
-	menu[8] = "Xoa dien thoai van phong";
+	menu[5] = "Them so dien thoai";
+	menu[6] = "Xoa so dien thoai";
+	menu[7] = "Thoat"
 	
 	int i;
 	for (i = 0; i < menusize; ++i)
@@ -150,8 +188,51 @@ void ContactMenu(Contact *a)
 		printf("\n\t%d, %s", i+1, menu[i]);
 	}
 	
+	free(menu)
+	
 	printf("\n");
 }
+
+void manageContactCommand(Contact *a, int command)
+{
+	switch (command)
+	{
+		case 1:
+				{
+					
+				},
+		case 2:
+				{
+					
+				},
+		case 3:
+				{
+					
+				},
+		case 4:
+				{
+					
+				},
+		case 5:
+				{
+					
+				},
+		case 6:
+				{
+					
+				},
+		case 7:
+				{
+					
+				},
+		case 8:
+				{
+					
+				}
+	}
+}
+
+// main()
 
 
 int main(int argc, char ** argv)
