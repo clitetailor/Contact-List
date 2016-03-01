@@ -5,18 +5,18 @@
 #include "ContactList.h"
 // LinkList Node
 
-void initializeNode(Node ** hNode)
+void initializeNode(Node ** a)
 {
-	(*hNode) = (Node *) malloc( sizeof(Node) );
+	(*a) = (Node *) malloc( sizeof(Node) );
 	
-	(*hNode)->next = NULL;
-	(*hNode)->data = NULL;
+	(*a)->next = NULL;
+	(*a)->data = NULL;
 };
 
-void deleteNode(Node *hNode)
+void deleteNode(Node *a)
 {
-	free(hNode->data);
-	free(hNode);
+	free(a->data);
+	free(a);
 };
 
 void linkNode(Node *nodeA, Node *nodeB)
@@ -93,6 +93,7 @@ bool removeNode(LinkList *a, int n)
 	
 	if (n == 0)
 	{
+		Node * temp;
 		temp = a->head->next;
 		deleteNode(a->head);
 		a->head = temp;
@@ -172,9 +173,9 @@ void initializeContact(Contact **a)
 	
 	(*a)->Name[0] = '\0';
 	
-	initializeLinkList(a->Email);
-	initializeLinkList(a->Address);
-	initializeLinkList(a->Phone);
+	initializeLinkList( &((*a)->Email) );
+	initializeLinkList( &((*a)->Address) );
+	initializeLinkList( &((*a)->Phone) );
 }
 
 void deleteContact(Contact *a)
@@ -186,7 +187,7 @@ void deleteContact(Contact *a)
 	free(a);
 }
 
-void setContactName(Contact *a, char * name)
+void changeContactName(Contact *a, char * name)
 {
 	strcpy(a->Name, name);
 }
@@ -194,51 +195,67 @@ void setContactName(Contact *a, char * name)
 void addEmail(Contact *a, char * email)
 {
 	Node * newNode;
-	initializeNode(newNode);
+	initializeNode(&newNode);
 	setString(newNode, email);
 	
 	appendNode(a->Email, newNode);
 }
 
-void removeEmail(Contact *a, int n)
+bool removeEmail(Contact *a, int n)
 {
+	if (n < 0 || n > a->Email->size - 1)
+	{
+		return false;
+	}
+	
 	removeNode(a->Email, n);
+	return true;
 }
 
 void addAddress(Contact *a, char * address)
 {
 	Node * newNode;
-	initializeNode(newNode);
+	initializeNode(&newNode);
 	setString(newNode, address);
 	
 	appendNode(a->Address, newNode);
 }
 
-void removeAddress(Contact *a, int n)
+bool removeAddress(Contact *a, int n)
 {
+	if (n < 0 || n > a->Address->size - 1)
+	{
+		return false;
+	}
+	
 	removeNode(a->Address, n);
+	return true;
 }
 
 void addPhone(Contact *a, char * phone)
 {
 	Node *newNode;
-	initializeNode(newNode);
+	initializeNode( &newNode );
 	setString(newNode, phone);
 	
-	appendNode(a->Phone, phone);
+	appendNode( a->Phone , newNode);
 }
 
-void removePhone(Contact *a, int n)
+bool removePhone(Contact *a, int n)
 {
-	removeNode(a->Phone, n);
-}
-
-void displayContact(Contact *a)
-{
+	if (n < 0 || n > a->Phone->size - 1)
+	{
+		return false;
+	}
 	
+	removeNode(a->Phone, n);
+	return true;
 }
+
+
 
 // Contact List
+
 
 void initializeContactList(ContactList **a)
 {
@@ -252,26 +269,37 @@ void deleteContactList(ContactList *a)
 
 void addContact(ContactList *a, char * name)
 {
-	Contact * newNode;
+	Node * newNode;
 	
 	initializeNode(&newNode);
 	appendNode(a, newNode);
 	
-	initializeContact( (ContactList**) &(newNode->data) );
-	setContactName( (Contact *) newNode->data , name );
+	Contact * newContact;
+	initializeContact(&newContact);
+	changeContactName(newContact, name);
+	newNode->data =  (void *) newContact;
 }
 
-void removeContact(ContactList *a, int i)
+bool removeContact(ContactList *a, int i)
 {
+	if (i < 0 || i > a->size - 1)
+	{
+		return false;
+	}
+	
+	Node * currentNode = getNode(a, i);
+	
+	Contact * currentContact = (Contact *) currentNode->data;
+	
+	deleteContact(currentContact);
 	removeNode(a, i);
+	
+	return true;
 }
 
 void renameContactInContactList(ContactList *a, int n, char * name)
 {
-	Node * currentNode;
-	currentNode = getNode(a, n);
 	
-	setContactName( (Contact *) currentNode->data , name );
 }
 
 

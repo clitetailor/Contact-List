@@ -1,7 +1,7 @@
 #ifndef _H_CONTACTLIST
 #define _H_CONTACTLIST
 
-#define MAX_STRING_SIZE 32
+#define MAX_STRING_SIZE 40
 
 #include <stdbool.h>
 
@@ -15,8 +15,8 @@ struct node
 };
 typedef struct node Node;
 
-void initializeNode(Node ** hNode);
-void deleteNode(Node *hNode);
+void initializeNode(Node ** a);
+void deleteNode(Node *a);
 
 void linkNode(Node *nodeA, Node *nodeB);
 
@@ -58,13 +58,13 @@ typedef struct contact Contact;
 void initializeContact(Contact ** a);
 void deleteContact(Contact *a);
 
-void setContactName(Contact *a, char * name);
+void changeContactName(Contact *a, char * name);
 void addEmail(Contact *a, char * email);
-void removeEmail(Contact *a, int n);
+bool removeEmail(Contact *a, int n);
 void addAdress(Contact *a, char * address);
-void removeAdress(Contact *a, int n);
+bool removeAdress(Contact *a, int n);
 void addPhone(Contact *a, char * phone);
-void removePhone(Contact *a, int n);
+bool removePhone(Contact *a, int n);
 
 
 
@@ -73,10 +73,8 @@ typedef LinkList ContactList;
 void initializeContactList(ContactList **a);
 void deleteContactList(ContactList *a);
 
-void printContactList(ContactList *a);
-
 void addContact(ContactList * a, char * name);
-void removeContact(ContactList * a, int i);
+bool removeContact(ContactList * a, int i);
 void renameContactInContactList(ContactList * a, int n, char * name);
 
 
